@@ -1,12 +1,12 @@
 #pragma once
 
 #include "StatusLED.h"
-#include "CPPTask.h"
+#include "FreeRTOS-Addons/include/thread.hpp"
 
 namespace FlashProgrammer
 {
 
-	class Application : public FreeRTOSCPP::Task
+	class Application : public cpp_freertos::Thread
 	{
 		public:
 			Application();

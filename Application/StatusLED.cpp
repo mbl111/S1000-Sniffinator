@@ -19,7 +19,7 @@ void StatusLED::Run()
 	SetStatus(StatusLED::BOOTING);
 	
 	//Loop
-	while (isRunning())
+	while (true)
 	{
 		
 		switch (_currentStatus)

@@ -1,7 +1,7 @@
 #pragma once
 #include "FreeRTOS.h"
 #include "task.h"
-#include "CPPTask.h"
+#include "FreeRTOS-Addons/include/thread.hpp"
 
 #define configSTATUSLED_RED 25
 #define configSTATUSLED_GREEN 24
@@ -11,7 +11,7 @@
 
 namespace FlashProgrammer
 {
-	class StatusLED:public FreeRTOSCPP::Task
+	class StatusLED:public cpp_freertos::Thread
 	{
 	public:
 		enum Status
@@ -33,7 +33,7 @@ namespace FlashProgrammer
 		Status GetStatus()
 		{return this->_currentStatus;
 		}
-		StatusLED() : Task("Status LED", 1024, 5)
+		StatusLED() : Thread("Status LED", 1024, 5)
 		{}
 		;
 	private:

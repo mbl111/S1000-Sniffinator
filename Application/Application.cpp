@@ -11,9 +11,10 @@
 #include "pico/stdlib.h"
 #include "tusb.h"
 
+
 using namespace FlashProgrammer;
 
-Application::Application() : Task("Application", 512, 1)
+Application::Application() : Thread("Application", 512, 1)
 {
 	Application::Status = new StatusLED();
 }
