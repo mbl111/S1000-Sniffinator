@@ -10,7 +10,8 @@ set(VERSION_MAJOR 0)
 set(VERSION_MINOR 1)
 set(VERSION_BUILD 1)
 
-project(${PROJECT_NAME} C CXX ASM)
+project(${PROJECT_NAME} C CXX ASM )
+project(${PROJECT_NAME} VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_BUILD})
 
 set(FAMILY rp2040)
 set(PICO_BOARD_HEADER_DIRS ${CMAKE_SOURCE_DIR}/Application/configuration)
@@ -21,4 +22,3 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 add_subdirectory(Application)
-

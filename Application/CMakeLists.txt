@@ -1,4 +1,4 @@
-set(FREERTOS_KERNEL_PATH ${PROJECT_SOURCE_DIR}\\..\\..\\FreeRTOS-Kernel\\)
+set(FREERTOS_KERNEL_PATH ${PROJECT_SOURCE_DIR}\\..\\..\\FreeRTOS\\FreeRTOS-Kernel_for_RP2040)
 set(CFG_TUSB_OS_INC_PATH ${FREERTOS_KERNEL_PATH}\\include\\)
 
 include(FreeRTOS_Kernel_import.cmake)
