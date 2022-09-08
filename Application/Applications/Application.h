@@ -1,9 +1,11 @@
 #pragma once
 
 #include "StatusLED.h"
+#include "UARTForwarder.h"
+#include "Console.h"
 #include "FreeRTOS-Addons/include/thread.hpp"
 
-namespace FlashProgrammer
+namespace Pacom
 {
 
 	class Application : public cpp_freertos::Thread
@@ -11,7 +13,9 @@ namespace FlashProgrammer
 		public:
 			Application();
 			virtual void Run();
-			static StatusLED* Status;
+
+			static Pacom::HAL::HardwareUart hwUart0;
+			static Pacom::HAL::HardwareUart hwUart1;
 	};
 	
 }

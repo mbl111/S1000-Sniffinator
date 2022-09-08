@@ -3,25 +3,20 @@
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
+#include "hardware/clocks.h"
 #include "pico/stdlib.h"
-#include "Application.h"
+#include "Applications/Application.h"
 
 
-	void vApplicationMallocFailedHook(void);
-	void vApplicationIdleHook(void);
-	void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName);
-	void vApplicationTickHook(void);
+void vApplicationMallocFailedHook(void);
+void vApplicationIdleHook(void);
+void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName);
 
+#define traceTASK_SWITCHED_IN() printf((int)pxCurrentTCB->pcTaskName);
 
 extern "C" int main(void)
 	{
-		
-		
-	
-		stdio_init_all();
-		
-		sleep_ms(5000);
-		
+		//stdio_init_all();
 		const char *rtos_name;
 		#if ( portSUPPORT_SMP == 1 )
 		rtos_name = "FreeRTOS SMP";
@@ -40,6 +35,7 @@ extern "C" int main(void)
 		while (true) ;
 		#else
 		printf("%s on core 0:\n", rtos_name);
+		
 		return AppMain();
 		#endif
 

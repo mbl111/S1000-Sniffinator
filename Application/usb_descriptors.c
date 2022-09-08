@@ -24,6 +24,7 @@
  */
 
 #include "tusb.h"
+#include "pico/unique_id.h"
 
 /* A combination of interfaces must have a unique product id, since PC will save device driver after the first plug.
  * Same VID/PID with different interface e.g MSC (first), then CDC (later) will possibly cause system error on PC.
@@ -35,7 +36,8 @@
 #define USB_PID (0x4000 | _PID_MAP(CDC, 0) | _PID_MAP(MSC, 1) | _PID_MAP(HID, 2) | \
 				 _PID_MAP(MIDI, 3) | _PID_MAP(VENDOR, 4))
 
-#define USB_VID 0xCafe
+//Pacom Vendor ID
+#define USB_VID 9910
 #define USB_BCD 0x0200
 
 //--------------------------------------------------------------------+
@@ -62,7 +64,9 @@ tusb_desc_device_t const desc_device =
 		.iProduct = 0x02,
 		.iSerialNumber = 0x03,
 
-		.bNumConfigurations = 0x01};
+		.bNumConfigurations = 0x01
+
+};
 
 // Invoked when received GET DEVICE DESCRIPTOR
 // Application return pointer to descriptor
@@ -182,16 +186,16 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 char const *string_desc_arr[] =
 	{
 		(const char[]){0x09, 0x04}, // 0: is supported language is English (0x0409)
-		"Pacom Systems",			// 1: Manufacturer
+		"Pacom Systems Pty. Ltd.",			// 1: Manufacturer
 		"S1000 Sniffer/Debugger",   // 2: Product
-		"RP2040",					// 3: Serials, should use chip ID
-		"BLE Chip",					// 4: CDC Interface
-		"S1000 UART",				// 5: CDC Interface
+		"NULL",						// 3: Serials, should use chip ID
+		"S1000 UART",				// 4: CDC Interface
+		"BLE Chip",					// 5: CDC Interface
 		"S1000 OSDP 1 TX",			// 6: CDC Interface
 		"S1000 OSDP 1 RX",			// 7: CDC Interface
 		"S1000 OSDP 2 TX",			// 8: CDC Interface
 		"S1000 OSDP 2 RX",			// 9: CDC Interface
-		"SPARE UART",				// A: CDC Interface
+		"Command Console",				// A: CDC Interface
 };
 
 static uint16_t _desc_str[32];
@@ -209,6 +213,19 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 		memcpy(&_desc_str[1], string_desc_arr[0], 2);
 		chr_count = 1;
 	}
+	else if (index == 3)
+	{
+		//Serial Number
+		chr_count = 31;
+		char picoUUID[32];
+
+		pico_get_unique_board_id_string(picoUUID, 32);
+
+		for (uint8_t i = 0; i < chr_count; i++)
+		{
+			_desc_str[1 + i] = picoUUID[i];
+		}
+	}
 	else
 	{
 		// Note: the 0xEE index string is a Microsoft OS 1.0 Descriptors.
@@ -224,7 +241,7 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 		if (chr_count > 31)
 			chr_count = 31;
 
-		// Convert ASCII string into UTF-16
+		//// Convert ASCII string into UTF-16
 		for (uint8_t i = 0; i < chr_count; i++)
 		{
 			_desc_str[1 + i] = str[i];

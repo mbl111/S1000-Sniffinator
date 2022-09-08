@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.5)
 
 
-target_sources(AppMain PUBLIC
-	FreeRTOS-Addons/ccondition_variable.cpp
-	FreeRTOS-Addons/cevent_groups.cpp
-	FreeRTOS-Addons/cmem_pool.cpp
-	FreeRTOS-Addons/cmutex.cpp
-	FreeRTOS-Addons/cqueue.cpp
-	FreeRTOS-Addons/cread_write_lock.cpp
-	FreeRTOS-Addons/csemaphore.cpp
-	FreeRTOS-Addons/ctasklet.cpp
-	FreeRTOS-Addons/cthread.cpp
-	FreeRTOS-Addons/ctickhook.cpp
-	FreeRTOS-Addons/ctimer.cpp
-	FreeRTOS-Addons/cworkqueue.cpp
+target_sources(${PROJECT_NAME} PUBLIC
+	${CMAKE_CURRENT_LIST_DIR}/ccondition_variable.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cevent_groups.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cmem_pool.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cmutex.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cqueue.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cread_write_lock.cpp
+	${CMAKE_CURRENT_LIST_DIR}/csemaphore.cpp
+	${CMAKE_CURRENT_LIST_DIR}/ctasklet.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cthread.cpp
+	${CMAKE_CURRENT_LIST_DIR}/ctickhook.cpp
+	${CMAKE_CURRENT_LIST_DIR}/ctimer.cpp
+	${CMAKE_CURRENT_LIST_DIR}/cworkqueue.cpp
 )
 
-target_include_directories(AppMain PUBLIC FreeRTOS-Addons/include )
+target_include_directories(${PROJECT_NAME} PUBLIC FreeRTOS-Addons/include )

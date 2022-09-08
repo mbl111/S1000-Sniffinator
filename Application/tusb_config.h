@@ -28,6 +28,7 @@
 
 #define CFG_TUD_ENABLED 1
 #define TUSB_OPT_DEVICE_ENABLED
+//#define TUD_OPT_HIGH_SPEED
 #define CFG_TUD_MAX_SPEED BOARD_TUD_MAX_SPEED
 
 //0x01 == Device mode

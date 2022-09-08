@@ -202,6 +202,7 @@ void Thread::TaskFunctionAdapter(void *pvParameters)
 {
     Thread *thread = static_cast<Thread *>(pvParameters);
 
+	printf("Starting Thread %s\n", thread->GetName().c_str());
     thread->Run();
 
 #if (INCLUDE_vTaskDelete == 1)
