@@ -12,3 +12,14 @@ void Pacom::HAL::GPIO::set(bool on) {
 bool Pacom::HAL::GPIO::get() {
 	return gpio_get(_gpioNumber);
 }
+
+void Pacom::HAL::GPIO::setPullup(bool pullup) {
+	if (pullup)
+	{
+		gpio_pull_up(_gpioNumber);
+	}
+	else
+	{
+		gpio_pull_down(_gpioNumber);
+	}
+}

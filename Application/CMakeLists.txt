@@ -3,7 +3,7 @@ set(CFG_TUSB_OS_INC_PATH ${FREERTOS_KERNEL_PATH}\\include\\)
 
 include(FreeRTOS_Kernel_import.cmake)
 
-add_executable(${PROJECT_NAME} usb_descriptors.c Applications/ApplicationManager.cpp)
+add_executable(${PROJECT_NAME} usb_descriptors.c Applications/ApplicationManager.cpp Hal/HardwareVersion.cpp)
 
 target_sources(${PROJECT_NAME} PUBLIC
      ${CMAKE_CURRENT_LIST_DIR}/EntryPoint.cpp
@@ -21,6 +21,9 @@ include(FreeRTOS-Addons/freertos-addons.cmake)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC $<$<CONFIG:Debug>:SNIFFER_DEBUG>)
 target_compile_definitions(${PROJECT_NAME} PUBLIC CPP_FREERTOS_NO_EXCEPTIONS)
+target_compile_definitions(${PROJECT_NAME} PUBLIC FIRMWARE_VERSION_MAJOR=${VERSION_MAJOR})
+target_compile_definitions(${PROJECT_NAME} PUBLIC FIRMWARE_VERSION_MINOR=${VERSION_MINOR})
+target_compile_definitions(${PROJECT_NAME} PUBLIC FIRMWARE_VERSION_BUILD=${VERSION_BUILD})
 
 #USB is used to communicate with the PC software
 #pico_enable_stdio_usb(AppMain 1)

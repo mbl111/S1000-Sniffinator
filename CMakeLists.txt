@@ -7,7 +7,7 @@ include(PicoSDKConfig.cmake)
 
 set(PROJECT_NAME S1000_Sniffinator)
 set(VERSION_MAJOR 0)
-set(VERSION_MINOR 1)
+set(VERSION_MINOR 3)
 set(VERSION_BUILD 1)
 
 project(${PROJECT_NAME} C CXX ASM )

@@ -23,23 +23,41 @@ void Pacom::Console::Run()
 	stdio_set_driver_enabled(&usbConsoleStdioDriver, true);
 	uint8_t consoleUartNumber = static_cast<uint8_t>(_usbSerialIndex);
 
-	if (tud_cdc_n_connected(consoleUartNumber))
-		printHelpMessage();
+
 
 	char consoleBuffer[64] = {};
 	int len = 0;
+	bool connected = false;
+	bool cursorPromptDisplayed = false;
 
 	while (true)
 	{
-		while (tud_cdc_n_available(consoleUartNumber) > 0)
+		if (tud_cdc_n_connected(consoleUartNumber))
 		{
-			char inputChar = tud_cdc_n_read_char(consoleUartNumber);
-			tud_cdc_n_write_char(consoleUartNumber, inputChar);
-			tud_cdc_n_write_char(consoleUartNumber, '\n');
-			tud_cdc_n_write_flush(consoleUartNumber);
-			ApplicationManager::Instance().getStatusLEDApplication().SetTemporaryStatus(Pacom::StatusLED::COMMAND, configSTATUSLED_COMMANDDISPLAYPERIOD);
-			switch (inputChar)
+			if (!connected)
 			{
+				connected = true;
+				printf("|-----------------------------------------------------|\n");
+				printf("|    S1000 Sniffinator. %u.%u.%u | Hardware Revision %u   |\n", 
+					   FIRMWARE_VERSION_MAJOR, 
+					   FIRMWARE_VERSION_MINOR, 
+					   FIRMWARE_VERSION_BUILD, 
+					   ApplicationManager::Instance().getHardwareVersion().getHardwareVersion());
+				printf("|                 Press 'H' for help!                 |\n");
+				printf("|-----------------------------------------------------|\n\n");
+			}
+		
+
+			while (tud_cdc_n_available(consoleUartNumber) > 0)
+			{
+				cursorPromptDisplayed = false;
+				char inputChar = tud_cdc_n_read_char(consoleUartNumber);
+				tud_cdc_n_write_char(consoleUartNumber, inputChar);
+				tud_cdc_n_write_char(consoleUartNumber, '\n');
+				tud_cdc_n_write_flush(consoleUartNumber);
+				ApplicationManager::Instance().getStatusLEDApplication().SetTemporaryStatus(Pacom::StatusLED::COMMAND, configSTATUSLED_COMMANDDISPLAYPERIOD);
+				switch (inputChar)
+				{
 				case 'r':
 					printf("[ CONSOLE] Restarting the S1000!\n");
 					HAL::S1000::Instance().restart();
@@ -59,9 +77,10 @@ void Pacom::Console::Run()
 					HAL::S1000::Instance().resetBle();
 					break;
 				case 'x':
-					printf("\n\n----------------------------------------\n\n");
-					printf("[ CONSOLE] Restarting the Sniffinator!\n");
+					printf("[ CONSOLE] Restarting the Sniffinator!\n\n\n");
 					tud_cdc_n_write(consoleUartNumber, consoleBuffer, len);
+					tud_cdc_n_write_flush(consoleUartNumber);
+					Delay(pdMS_TO_TICKS(100));
 					//Force a restart of the pico!
 					watchdog_enable(1, 1);
 					while (1)
@@ -74,10 +93,23 @@ void Pacom::Console::Run()
 				default:
 					ApplicationManager::Instance().getStatusLEDApplication().SetTemporaryStatus(Pacom::StatusLED::CONSOLE_ERROR, configSTATUSLED_ERRORDISPLAYPERIOD);
 					break;
+				}
 			}
+
+			if (!cursorPromptDisplayed)
+			{
+				cursorPromptDisplayed = true;
+				printf("COMMAND>");
+			}
+			
+			tud_cdc_n_write_flush(consoleUartNumber);
 		}
-		tud_cdc_n_write_flush(consoleUartNumber);
-		vTaskDelay(pdMS_TO_TICKS(50));
+		else
+		{
+			connected = false;
+		}
+		
+		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 }
 

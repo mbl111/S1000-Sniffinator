@@ -10,7 +10,6 @@
 // -----------------------------------------------------
 
 // This header may be included by other board headers as "boards/pico.h"
-
 #ifndef _BOARDS_PICO_H
 #define _BOARDS_PICO_H
 
@@ -66,8 +65,9 @@
 
 #define PICO_BOOT_STAGE2_CHOOSE_W25Q080 1
 
+
 #ifndef PICO_FLASH_SPI_CLKDIV
-#define PICO_FLASH_SPI_CLKDIV 2
+#define PICO_FLASH_SPI_CLKDIV 4
 #endif
 
 #ifndef PICO_FLASH_SIZE_BYTES
@@ -80,5 +80,8 @@
 #ifndef PICO_RP2040_B0_SUPPORTED
 #define PICO_RP2040_B0_SUPPORTED 1
 #endif
+
+// XOSC TWEAKS
+#define PICO_XOSC_STARTUP_DELAY_MULTIPLIER 16
 
 #endif

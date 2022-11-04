@@ -4,6 +4,7 @@
 #include "UARTForwarder.h"
 #include "Console.h"
 #include "FreeRTOS-Addons/include/thread.hpp"
+#include "GPIO.h"
 
 namespace Pacom
 {
@@ -16,6 +17,9 @@ namespace Pacom
 
 			static Pacom::HAL::HardwareUart hwUart0;
 			static Pacom::HAL::HardwareUart hwUart1;
+			
+		  private:
+			uint8_t readHardwareRevision();
 	};
 	
 }

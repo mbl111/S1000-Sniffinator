@@ -16,7 +16,6 @@
 #include "ApplicationManager.h"
 #include "Hal/S1000.h"
 
-
 using namespace Pacom;
 
 Application::Application() : Thread("Application", 512, 20)
@@ -26,7 +25,7 @@ Application::Application() : Thread("Application", 512, 20)
 
 void Application::Run()
 {
-
+	
 	printf("[APPLICAT] Initializing Application Manager\n");
 	ApplicationManager::Instance().Initialize();
 
@@ -38,13 +37,17 @@ void Application::Run()
 	ApplicationManager::Instance().getConsoleApplication().Start();
 	vTaskDelay(pdMS_TO_TICKS(100));
 
-	printf("[APPLICAT] Starting Hardware Uart Applications\n");
+	printf("[APPLICAT] Starting S1000 Uart Applications\n");
 	ApplicationManager::Instance().getLogUartOutApplication().Start();
 	ApplicationManager::Instance().getLogUartInApplication().Start();
-	
-	ApplicationManager::Instance().getBleUartOutApplication().Start();
-	ApplicationManager::Instance().getBleUartInApplication().Start();
-	ApplicationManager::Instance().getBleUartInApplication().enableFlowControl(7, 6);
+
+	if (ApplicationManager::Instance().getHardwareVersion().hasBLESupport())
+	{	
+		printf("[APPLICAT] Starting S1000 Uart Applications\n");
+		ApplicationManager::Instance().getBleUartOutApplication().Start();
+		ApplicationManager::Instance().getBleUartInApplication().Start();
+		ApplicationManager::Instance().getBleUartInApplication().enableFlowControl(7, 6);
+	}
 
 	printf("[APPLICAT] Starting PIO Uart Applications\n");
 	ApplicationManager::Instance().getNonIso485RXApplication().Start();
@@ -135,7 +138,24 @@ TU_ATTR_WEAK void __not_in_flash_func(tud_cdc_line_coding_cb)(uint8_t itf, cdc_l
 				ApplicationManager::Instance().getNonIso485TXApplication().configureUart(p_line_coding->bit_rate, p_line_coding->data_bits, uartParity);
 				break;
 			case static_cast<int>(USBUART::DEBUGLOG):
-				ApplicationManager::Instance().getLogUartOutApplication().configureUart(p_line_coding->bit_rate, p_line_coding->data_bits, uartParity);
+				if (p_line_coding->stop_bits == 2 && p_line_coding->bit_rate == 0xCAFE)
+				{
+					if (p_line_coding->parity == 0)
+					{
+						printf("[USBCALBK] Reetting Boot0 Pin\n");
+						HAL::S1000::Instance().resetBoot0Pin();
+					}
+					else if (p_line_coding->parity == 1)
+					{
+						printf("[USBCALBK] Setting Boot0 Pin\n");
+
+						HAL::S1000::Instance().setBoot0Pin();
+					}
+				}
+				else
+				{
+					ApplicationManager::Instance().getLogUartOutApplication().configureUart(p_line_coding->bit_rate, p_line_coding->data_bits, uartParity);
+				}
 				break;
 			case static_cast<int>(USBUART::BLEMODULE):
 				ApplicationManager::Instance().getBleUartOutApplication().configureUart(p_line_coding->bit_rate, p_line_coding->data_bits, uartParity);

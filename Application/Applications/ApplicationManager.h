@@ -3,6 +3,7 @@
 #include "UARTForwarder.h"
 #include "Console.h"
 #include "StatusLED.h"
+#include "HardwareVersion.h"
 
 namespace Pacom
 {
@@ -26,6 +27,8 @@ namespace Pacom
 			Console &getConsoleApplication() { return *_console; };
 
 			StatusLED &getStatusLEDApplication() { return *_statusLED; };
+
+			HAL::HardwareVersion &getHardwareVersion() { return *_hardwareVersion; };
 		  private:
 			ApplicationManager(){};
 			static ApplicationManager *_instance;
@@ -40,5 +43,8 @@ namespace Pacom
 			UartToUSBForwarder *_Iso485TX = nullptr;
 			UartToUSBForwarder *_Iso485RX = nullptr;
 			Console *_console;
+			
+			
+			HAL::HardwareVersion *_hardwareVersion = nullptr;
 		};
 }

@@ -21,15 +21,17 @@ namespace Pacom
 			void restart();
 			void enterBootloader();
 			void resetBle();
+			void setBoot0Pin();
+			void resetBoot0Pin();
+			bool wasBootloaderEnteredManually() { return _bootloaderEnteredManually; };
 
-		  private:
-			S1000() : _restartPin(configGPIO_S1000RESET), _bootloaderPin(configGPIO_S1000BOOT0), _bleResetPin(configGPIO_BLERESET){
-			};
-			GPIO _restartPin;
-			GPIO _bootloaderPin;
-			GPIO _bleResetPin;
-			cpp_freertos::MutexStandard _mutex;
-			static S1000 *_instance;
+		private : S1000() : _restartPin(configGPIO_S1000RESET), _bootloaderPin(configGPIO_S1000BOOT0), _bleResetPin(configGPIO_BLERESET){};
+		GPIO _restartPin;
+		GPIO _bootloaderPin;
+		GPIO _bleResetPin;
+		cpp_freertos::MutexStandard _mutex;
+		bool _bootloaderEnteredManually;
+		static S1000 *_instance;
 		};
 	} // namespace HAL
 }

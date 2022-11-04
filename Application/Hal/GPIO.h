@@ -19,6 +19,7 @@ namespace Pacom
 			~GPIO(){};
 			void set(bool on);
 			bool get();
+			void setPullup(bool pullup);
 		  private:
 			uint8_t _gpioNumber;
 			bool _output;

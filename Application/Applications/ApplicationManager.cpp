@@ -12,8 +12,14 @@ Pacom::ApplicationManager &Pacom::ApplicationManager::Instance() {
 
 void Pacom::ApplicationManager::Initialize()
 {
+
+	_hardwareVersion = new HAL::HardwareVersion();
+	_hardwareVersion->initalize();
+
 	HAL::HardwareUart::hwUart0->init(0, 115200);
-	HAL::HardwareUart::hwUart1->init(1, 115200);
+	
+	if (_hardwareVersion->hasBLESupport())
+		HAL::HardwareUart::hwUart1->init(1, 115200);
 
 	HAL::PIOUart::pioUart00 = new HAL::PIOUart((PIO)pio0, 0, HAL::PIOUartPin::ISO_TX);
 	HAL::PIOUart::pioUart01 = new HAL::PIOUart((PIO)pio0, 1, HAL::PIOUartPin::ISO_RX);
@@ -32,6 +38,9 @@ void Pacom::ApplicationManager::Initialize()
 	_logUart = new HWUartToUSBForwarder(HAL::HardwareUart::hwUart0, USBUART::DEBUGLOG);
 	_logUartIn = new USBToUartForwarder(HAL::HardwareUart::hwUart0, USBUART::DEBUGLOG);
 
-	_bleUart = new HWUartToUSBForwarder(HAL::HardwareUart::hwUart1, USBUART::BLEMODULE);
-	_bleUartIn = new USBToUartForwarder(HAL::HardwareUart::hwUart1, USBUART::BLEMODULE);
+	if (_hardwareVersion->hasBLESupport())
+	{
+		_bleUart = new HWUartToUSBForwarder(HAL::HardwareUart::hwUart1, USBUART::BLEMODULE);
+		_bleUartIn = new USBToUartForwarder(HAL::HardwareUart::hwUart1, USBUART::BLEMODULE);
+	}
 }
