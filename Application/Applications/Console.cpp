@@ -20,9 +20,10 @@ stdio_driver_t usbConsoleStdioDriver = {
 void Pacom::Console::Run()
 {
 	//Uncomment to install the driver so that printf goes to our console!
+#ifndef SIMPLE_COM_PORTS	
 	stdio_set_driver_enabled(&usbConsoleStdioDriver, true);
+#endif
 	uint8_t consoleUartNumber = static_cast<uint8_t>(_usbSerialIndex);
-
 
 
 	char consoleBuffer[64] = {};

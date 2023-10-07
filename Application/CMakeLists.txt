@@ -24,6 +24,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC CPP_FREERTOS_NO_EXCEPTIONS)
 target_compile_definitions(${PROJECT_NAME} PUBLIC FIRMWARE_VERSION_MAJOR=${VERSION_MAJOR})
 target_compile_definitions(${PROJECT_NAME} PUBLIC FIRMWARE_VERSION_MINOR=${VERSION_MINOR})
 target_compile_definitions(${PROJECT_NAME} PUBLIC FIRMWARE_VERSION_BUILD=${VERSION_BUILD})
+target_compile_definitions(${PROJECT_NAME} PUBLIC SIMPLE_COM_PORTS)
 
 #USB is used to communicate with the PC software
 #pico_enable_stdio_usb(AppMain 1)

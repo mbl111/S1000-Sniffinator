@@ -34,12 +34,16 @@ void Application::Run()
 
 	printf("[APPLICAT] Starting onboard applications\n");
 	ApplicationManager::Instance().getStatusLEDApplication().Start();
+#ifndef SIMPLE_COM_PORTS
 	ApplicationManager::Instance().getConsoleApplication().Start();
+#endif
 	vTaskDelay(pdMS_TO_TICKS(100));
 
 	printf("[APPLICAT] Starting S1000 Uart Applications\n");
 	ApplicationManager::Instance().getLogUartOutApplication().Start();
 	ApplicationManager::Instance().getLogUartInApplication().Start();
+
+#ifndef SIMPLE_COM_PORTS
 
 	if (ApplicationManager::Instance().getHardwareVersion().hasBLESupport())
 	{	
@@ -55,6 +59,8 @@ void Application::Run()
 	ApplicationManager::Instance().getIso485RXApplication().Start();
 	ApplicationManager::Instance().getIso485TXApplication().Start();
 
+#endif
+	
 	printf("[APPLICAT] System Clockrate: %u\n", clock_get_hz(clk_sys));
 
 	ApplicationManager::Instance().getStatusLEDApplication().SetStatus(StatusLED::CONNECTED);
