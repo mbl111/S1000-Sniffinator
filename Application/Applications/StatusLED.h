@@ -37,6 +37,9 @@ namespace Pacom
 			_flashState = 0;
 			_restoreTime = 0;
 			_lastFlashTime = xTaskGetTickCount();
+
+			_statusGreen.set(false);
+			_statusRed.set(true);
 		}
 
 		void SetTemporaryStatus(Status newStatus, uint32_t ticksToStayActive)

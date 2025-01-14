@@ -11,14 +11,14 @@
     </CatchpointConfiguration>
     <MaskInterruptsWhileStepping>false</MaskInterruptsWhileStepping>
     <MemoryWindowPreferences />
-    <LiveVariables />
+    <e />
+    <c>
+      <b>AllGlobals</b>
+      <a>false</a>
+    </c>
     <Suggestions>
       <HardwareRegisterFilters />
     </Suggestions>
-    <LiveVariablePreferences>
-      <ViewMode>AllGlobals</ViewMode>
-      <FavoritesOnly>false</FavoritesOnly>
-    </LiveVariablePreferences>
     <HardwareRegisters />
   </DebugPreferences>
 </VisualGDBUserPreferences>

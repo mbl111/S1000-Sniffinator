@@ -25,15 +25,19 @@ Application::Application() : Thread("Application", 512, 20)
 
 void Application::Run()
 {
-	
 	printf("[APPLICAT] Initializing Application Manager\n");
 	ApplicationManager::Instance().Initialize();
+
+	vTaskDelay(pdMS_TO_TICKS(1000));
+
+	printf("[APPLICAT] Starting onboard applications\n");
+	ApplicationManager::Instance().getStatusLEDApplication().Start();
+
+	vTaskDelay(pdMS_TO_TICKS(1000));
 
 	printf("[APPLICAT] Initializing USB Connection\n");
 	tusb_init();
 
-	printf("[APPLICAT] Starting onboard applications\n");
-	ApplicationManager::Instance().getStatusLEDApplication().Start();
 #ifndef SIMPLE_COM_PORTS
 	ApplicationManager::Instance().getConsoleApplication().Start();
 #endif

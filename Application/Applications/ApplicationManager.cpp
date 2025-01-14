@@ -17,7 +17,9 @@ void Pacom::ApplicationManager::Initialize()
 	_hardwareVersion->initalize();
 
 	_statusLED = new StatusLED();
-	
+
+	vTaskDelay(pdMS_TO_TICKS(1000));
+
 	HAL::HardwareUart::hwUart0->init(0, 115200);
 	_logUart = new HWUartToUSBForwarder(HAL::HardwareUart::hwUart0, USBUART::DEBUGLOG);
 	_logUartIn = new USBToUartForwarder(HAL::HardwareUart::hwUart0, USBUART::DEBUGLOG);

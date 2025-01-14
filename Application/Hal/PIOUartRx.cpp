@@ -5,6 +5,7 @@
 #include <memory>
 #include "UartRx.pio.h"
 #include <cstring>
+#include <malloc.h>
 
 uint Pacom::HAL::PIOUart::read(uint8_t *buffer, uint length)
 {

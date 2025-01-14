@@ -10,11 +10,11 @@
   <Build xsi:type="com.visualgdb.build.cmake">
     <BuildLogMode xsi:nil="true" />
     <ToolchainID>
-      <ID>com.visualgdb.arm-eabi</ID>
+      <ID>7d038b06-af8c-48c7-93cc-0b7655151fe0</ID>
       <Version>
-        <GCC>7.2.0</GCC>
-        <GDB>8.0.1</GDB>
-        <Revision>3</Revision>
+        <GCC>10.3.1</GCC>
+        <GDB>(GNU</GDB>
+        <Revision>0</Revision>
       </Version>
     </ToolchainID>
     <RelativeSourceDirectory />
@@ -72,6 +72,7 @@
           <Source>Git</Source>
           <Version>1.4.0</Version>
         </SDK>
+        <Configuration />
         <UnoptimizeDebugBuilds>true</UnoptimizeDebugBuilds>
       </Extension>
     </ProjectModeSettings>
